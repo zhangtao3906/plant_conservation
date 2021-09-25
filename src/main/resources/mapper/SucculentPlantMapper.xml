@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.SucculentPlantMapper">
+
+    <insert id="insSucculentPlant">
+        insert into `succulent_plant`(`plantTypeCode`,`plantTypeName`,`succulentPlantName`,
+                                      `succulentPlantCode`,`plantPrice`,`plantFunction`,
+                                      `growingEnvironment`,`conservationMethod`,
+                                      `enable`,`activity`,`createrCode`,
+                                      `addTime`)
+        values(#{succulentPlant.plantTypeCode},#{succulentPlant.plantTypeName},
+               #{succulentPlant.succulentPlantName},#{succulentPlant.succulentPlantCode},
+               #{succulentPlant.plantPrice},#{succulentPlant.plantFunction},
+               #{succulentPlant.growingEnvironment},#{succulentPlant.conservationMethod},
+               #{succulentPlant.enable},#{succulentPlant.activity},#{succulentPlant.createrCode},
+                   #{succulentPlant.addTime})
+    </insert>
+
+    <select id="checkSucculentPlantCode" resultType="com.zhangtao.plant_conservation.pojo.SucculentPlant">
+        select * from `succulent_plant` where 1=1 and
+        <if test="succulentPlant.succulentPlantCode != null">
+            `succulentPlantCode` = #{succulentPlant.succulentPlantCode}
+        </if>
+    </select>
+
+    <update id="deleteSucculentPlant" parameterType="com.zhangtao.plant_conservation.pojo.SucculentPlant">
+        update `succulent_plant` set `enable`=false ,`activity`=false
+        where `succulentPlantCode` = #{succulentPlant.succulentPlantCode}
+    </update>
+
+    <update id="restartSucculentPlant">
+        update `succulent_plant` set `enable`=true ,`activity`=true
+        where `succulentPlantCode` = #{succulentPlant.succulentPlantCode}
+    </update>
+
+    <update id="updateSucculentPlant">
+        update `succulent_plant` set
+        <if test="succulentPlant.plantTypeCode != null">
+            `plantTypeCode`=#{succulentPlant.plantTypeCode},
+        </if>
+        <if test="succulentPlant.plantTypeName != null">
+            `plantTypeName`=#{succulentPlant.plantTypeName},
+        </if>
+        <if test="succulentPlant.succulentPlantName != null">
+            `succulentPlantName`=#{succulentPlant.succulentPlantName},
+        </if>
+        <if test="succulentPlant.plantPrice != null">
+            `plantPrice`=#{succulentPlant.plantPrice},
+        </if>
+        <if test="succulentPlant.plantFunction != null">
+            `plantFunction`=#{succulentPlant.plantFunction},
+        </if>
+        <if test="succulentPlant.growingEnvironment != null">
+            `growingEnvironment`=#{succulentPlant.growingEnvironment},
+        </if>
+        <if test="succulentPlant.conservationMethod != null">
+            `conservationMethod`=#{succulentPlant.conservationMethod},
+        </if>
+        <if test="succulentPlant.enable != null">
+            `enable`=#{succulentPlant.enable},
+        </if>
+        <if test="succulentPlant.activity != null">
+            `activity`=#{succulentPlant.activity},
+        </if>
+        <if test="succulentPlant.createrCode != null">
+            `createrCode`=#{succulentPlant.createrCode},
+        </if>
+        where `succulentPlantCode`=#{succulentPlant.succulentPlantCode}
+    </update>
+
+    <select id="selSucculentPlantList" resultType="com.zhangtao.plant_conservation.pojo.SucculentPlant">
+        select * from `succulent_plant` where 1=1
+    </select>
+
+    <select id="selSucculentPlantByCodeList" resultType="com.zhangtao.plant_conservation.pojo.SucculentPlant">
+        select * from `succulent_plant` where `succulentPlantCode`=#{succulentPlant.succulentPlantCode}
+        <if test="succulentPlant.enable != null">
+            and `enable`=#{succulentPlant.enable}
+        </if>
+    </select>
+</mapper>

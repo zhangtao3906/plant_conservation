@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.ManagerMapper">
+
+    <insert id="insManager">
+        insert into `manager`(`managerName`,`managerPassowrd`,`isManager`,
+                                      `enable`,`activity`,`createrCode`,
+                                      `addTime`)
+        values(#{manager.managerName},#{manager.managerPassowrd}, #{manager.isManager},
+               #{manager.enable},#{manager.activity},#{manager.createrCode},
+               #{manager.addTime})
+    </insert>
+
+    <select id="checkManagerCode" resultType="com.zhangtao.plant_conservation.pojo.LargePlant">
+        select * from `manager` where 1=1 and
+        <if test="manager.managerCode != null">
+            `managerCode` = #{manager.managerCode}
+        </if>
+    </select>
+
+    <update id="deleteManager" parameterType="com.zhangtao.plant_conservation.pojo.Manager">
+        update `manager` set `enable`=false ,`activity`=false
+        where  `managerCode` = #{manager.managerCode}
+    </update>
+
+    <update id="restartManager">
+        update `manager` set `enable`=true ,`activity`=true
+        where `managerCode` = #{manager.managerCode}
+    </update>
+
+    <update id="updateManager">
+        update `manager` set
+        <if test="manager.managerName != null">
+            `managerName`=#{manager.managerName},
+        </if>
+        <if test="manager.managerPassowrd != null">
+            `managerPassowrd`=#{manager.managerPassowrd},
+        </if>
+        <if test="manager.isManager != null">
+            `isManager`=#{manager.isManager},
+        </if>
+        <if test="manager.enable != null">
+            `enable`=#{manager.enable},
+        </if>
+        <if test="manager.activity != null">
+            `activity`=#{manager.activity},
+        </if>
+        <if test="manager.createrCode != null">
+            `createrCode`=#{manager.createrCode},
+        </if>
+        where `managerCode` = #{manager.managerCode}
+    </update>
+
+    <select id="selManagerList" resultType="com.zhangtao.plant_conservation.pojo.Manager">
+        select * from `manager` where 1=1
+    </select>
+
+    <select id="selManagerByCodeList" resultType="com.zhangtao.plant_conservation.pojo.Manager">
+        select * from `manager` where `managerCode` = #{manager.managerCode}
+        <if test="manager.enable != null">
+            and `enable`=#{manager.enable}
+        </if>
+    </select>
+</mapper>

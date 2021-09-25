@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.SmallPlantMapper">
+
+    <insert id="insSmallPlant">
+        insert into `small_plant`(`plantTypeCode`,`plantTypeName`,`smallPlantName`,
+                                      `smallPlantCode`,`plantPrice`,`plantFunction`,
+                                      `growingEnvironment`,`conservationMethod`,
+                                      `enable`,`activity`,`createrCode`,
+                                      `addTime`)
+        values(#{smallPlant.plantTypeCode},#{smallPlant.plantTypeName},
+               #{smallPlant.smallPlantName},#{smallPlant.smallPlantCode},
+               #{smallPlant.plantPrice},#{smallPlant.plantFunction},
+               #{smallPlant.growingEnvironment},#{smallPlant.conservationMethod},
+               #{smallPlant.enable},#{smallPlant.activity},#{smallPlant.createrCode},
+               #{smallPlant.addTime})
+    </insert>
+
+    <select id="checkSmallPlantCode" resultType="com.zhangtao.plant_conservation.pojo.SmallPlant">
+        select * from `small_plant` where 1=1 and
+        <if test="smallPlant.smallPlantCode != null">
+            `smallPlantCode` = #{smallPlant.smallPlantCode}
+        </if>
+    </select>
+
+    <update id="deleteSmallPlant" parameterType="com.zhangtao.plant_conservation.pojo.SmallPlant">
+        update `small_plant` set `enable`=false ,`activity`=false
+        where `smallPlantCode` = #{smallPlant.smallPlantCode}
+    </update>
+
+    <update id="restartSmallPlant">
+        update `small_plant` set `enable`=true ,`activity`=true
+        where `smallPlantCode` = #{smallPlant.smallPlantCode}
+    </update>
+
+    <update id="updateSmallPlant">
+        update `small_plant` set
+        <if test="smallPlant.plantTypeCode != null">
+            `plantTypeCode`=#{smallPlant.plantTypeCode},
+        </if>
+        <if test="smallPlant.plantTypeName != null">
+            `plantTypeName`=#{smallPlant.plantTypeName},
+        </if>
+        <if test="smallPlant.smallPlantName != null">
+            `smallPlantName`=#{smallPlant.smallPlantName},
+        </if>
+        <if test="smallPlant.plantPrice != null">
+            `plantPrice`=#{smallPlant.plantPrice},
+        </if>
+        <if test="smallPlant.plantFunction != null">
+            `plantFunction`=#{smallPlant.plantFunction},
+        </if>
+        <if test="smallPlant.growingEnvironment != null">
+            `growingEnvironment`=#{smallPlant.growingEnvironment},
+        </if>
+        <if test="smallPlant.conservationMethod != null">
+            `conservationMethod`=#{smallPlant.conservationMethod},
+        </if>
+        <if test="smallPlant.enable != null">
+            `enable`=#{smallPlant.enable},
+        </if>
+        <if test="smallPlant.activity != null">
+            `activity`=#{smallPlant.activity},
+        </if>
+        <if test="smallPlant.createrCode != null">
+            `createrCode`=#{smallPlant.createrCode},
+        </if>
+        where `smallPlantCode`=#{smallPlant.smallPlantCode}
+    </update>
+
+    <select id="selSmallPlantList" resultType="com.zhangtao.plant_conservation.pojo.SmallPlant">
+        select * from `small_plant` where 1=1
+    </select>
+
+    <select id="selSmallPlantByCodeList" resultType="com.zhangtao.plant_conservation.pojo.SmallPlant">
+        select * from `small_plant` where `smallPlantCode`=#{smallPlant.smallPlantCode}
+        <if test="smallPlant.enable != null">
+            and `enable`=#{smallPlant.enable}
+        </if>
+    </select>
+
+    <update id="updateSmallPlantList">
+        update `small_plant` set
+        <if test="smallPlant.createrCode != null">
+            `activity`=#{smallPlant.activity}
+        </if>
+        where `smallPlantCode`=#{smallPlant.smallPlantCode}
+    </update>
+
+</mapper>

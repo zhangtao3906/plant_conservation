@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.MediumPlantMapper">
+
+    <insert id="insMediumPlant">
+        insert into `medium_plant`(`plantTypeCode`,`plantTypeName`,`mediumPlantName`,
+                                      `mediumPlantCode`,`plantPrice`,`plantFunction`,
+                                      `growingEnvironment`,`conservationMethod`,
+                                      `enable`,`activity`,`createrCode`,
+                                      `addTime`)
+        values(#{mediumPlant.plantTypeCode},#{mediumPlant.plantTypeName},
+               #{mediumPlant.mediumPlantName},#{mediumPlant.mediumPlantCode},
+               #{mediumPlant.plantPrice},#{mediumPlant.plantFunction},
+               #{mediumPlant.growingEnvironment},#{mediumPlant.conservationMethod},
+               #{mediumPlant.enable},#{mediumPlant.activity},#{mediumPlant.createrCode},
+               #{mediumPlant.addTime})
+    </insert>
+
+    <select id="checkMediumPlantCode" resultType="com.zhangtao.plant_conservation.pojo.MediumPlant">
+        select * from `medium_plant` where 1=1 and
+        <if test="mediumPlant.mediumPlantCode != null">
+            `mediumPlantCode` = #{mediumPlant.mediumPlantCode}
+        </if>
+    </select>
+
+    <update id="deleteMediumPlant" parameterType="com.zhangtao.plant_conservation.pojo.MediumPlant">
+        update `medium_plant` set `enable`=false ,`activity`=false
+        where  `mediumPlantCode` = #{mediumPlant.mediumPlantCode}
+    </update>
+
+    <update id="restartMediumPlant">
+        update `medium_plant` set `enable`=true ,`activity`=true
+        where `mediumPlantCode` = #{mediumPlant.mediumPlantCode}
+    </update>
+
+    <update id="updateMediumPlant">
+        update `medium_plant` set
+        <if test="mediumPlant.plantTypeCode != null">
+            `plantTypeCode`=#{mediumPlant.plantTypeCode},
+        </if>
+        <if test="mediumPlant.plantTypeName != null">
+            `plantTypeName`=#{mediumPlant.plantTypeName},
+        </if>
+        <if test="mediumPlant.mediumPlantName != null">
+            `mediumPlantName`=#{mediumPlant.mediumPlantName},
+        </if>
+        <if test="mediumPlant.plantPrice != null">
+            `plantPrice`=#{mediumPlant.plantPrice},
+        </if>
+        <if test="mediumPlant.plantFunction != null">
+            `plantFunction`=#{mediumPlant.plantFunction},
+        </if>
+        <if test="mediumPlant.growingEnvironment != null">
+            `growingEnvironment`=#{mediumPlant.growingEnvironment},
+        </if>
+        <if test="mediumPlant.conservationMethod != null">
+            `conservationMethod`=#{mediumPlant.conservationMethod},
+        </if>
+        <if test="mediumPlant.enable != null">
+            `enable`=#{mediumPlant.enable},
+        </if>
+        <if test="mediumPlant.activity != null">
+            `activity`=#{mediumPlant.activity},
+        </if>
+        <if test="mediumPlant.createrCode != null">
+            `createrCode`=#{mediumPlant.createrCode},
+        </if>
+        where `mediumPlantCode` = #{mediumPlant.mediumPlantCode}
+    </update>
+
+    <select id="selMediumPlantList" resultType="com.zhangtao.plant_conservation.pojo.MediumPlant">
+        select * from `medium_plant` where 1=1
+    </select>
+
+    <select id="selMediumPlantByCodeList" resultType="com.zhangtao.plant_conservation.pojo.MediumPlant">
+        select * from `medium_plant` where `mediumPlantCode` = #{mediumPlant.mediumPlantCode}
+        <if test="mediumPlant.enable != null">
+            and `enable`=#{mediumPlant.enable}
+        </if>
+    </select>
+</mapper>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.PlantTypeMapper">
+
+    <insert id="insPlantType">
+        insert into `plant_type`(`plantTypeCode`,`plantTypeName`,`enable`,`activity`,`createrCode`)
+        values(#{plantType.plantTypeCode},#{plantType.plantTypeName},
+               #{plantType.enable},#{plantType.activity},#{plantType.createrCode})
+    </insert>
+
+    <select id="checkPlantTypeCode" resultType="com.zhangtao.plant_conservation.pojo.PlantType">
+        select * from `plant_type` where 1=1 and
+        <if test="plantType.plantTypeCode !=null">
+            `plantTypeCode` = #{plantType.plantTypeCode}
+        </if>
+    </select>
+
+    <update id="deletePlantType" parameterType="com.zhangtao.plant_conservation.pojo.PlantType">
+        update `plant_type` set `enable`=false ,`activity`=false
+            where `plantTypeCode` = #{plantType.plantTypeCode}
+    </update>
+
+    <update id="restartPlantType">
+        update `plant_type` set `enable`=true ,`activity`=true
+        where `plantTypeCode` = #{plantType.plantTypeCode}
+    </update>
+
+    <update id="updatePlantType">
+        update `plant_type` set
+        <if test="plantType.plantTypeName != null">
+            `plantTypeName`=#{plantType.plantTypeName},
+        </if>
+        <if test="plantType.enable != null">
+            `enable`=#{plantType.enable},
+        </if>
+        <if test="plantType.activity != null">
+            `activity`=#{plantType.activity},
+        </if>
+        <if test="plantType.createrCode != null">
+            `createrCode`=#{plantType.createrCode},
+        </if>
+        where `plantTypeCode`=#{plantType.plantTypeCode}
+    </update>
+
+    <select id="selPlantTypeList" resultType="com.zhangtao.plant_conservation.pojo.PlantType">
+        select * from plant_type where 1=1
+    </select>
+
+    <select id="selPlantTypeByCodeList" resultType="com.zhangtao.plant_conservation.pojo.PlantType">
+        select * from plant_type where plantTypeCode=#{plantType.plantTypeCode}
+        <if test="plantType.enable != null">
+            and `enable`=#{plantType.enable}
+        </if>
+    </select>
+
+</mapper>

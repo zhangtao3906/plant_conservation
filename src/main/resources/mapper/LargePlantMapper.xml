@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+<mapper namespace="com.zhangtao.plant_conservation.mapper.LargePlantMapper">
+
+    <insert id="insLargePlant">
+        insert into `large_plant`(`plantTypeCode`,`plantTypeName`,`largePlantName`,
+                                      `largePlantCode`,`plantPrice`,`plantFunction`,
+                                      `growingEnvironment`,`conservationMethod`,
+                                      `enable`,`activity`,`createrCode`,
+                                      `addTime`)
+        values(#{largePlant.plantTypeCode},#{largePlant.plantTypeName},
+               #{largePlant.largePlantName},#{largePlant.largePlantCode},
+               #{largePlant.plantPrice},#{largePlant.plantFunction},
+               #{largePlant.growingEnvironment},#{largePlant.conservationMethod},
+               #{largePlant.enable},#{largePlant.activity},#{largePlant.createrCode},
+               #{largePlant.addTime})
+    </insert>
+
+    <select id="checkLargePlantCode" resultType="com.zhangtao.plant_conservation.pojo.LargePlant">
+        select * from `large_plant` where 1=1 and
+        <if test="largePlant.largePlantCode != null">
+            `largePlantCode` = #{largePlant.largePlantCode}
+        </if>
+    </select>
+
+    <update id="deleteLargePlant" parameterType="com.zhangtao.plant_conservation.pojo.LargePlant">
+        update `large_plant` set `enable`=false ,`activity`=false
+        where  `largePlantCode` = #{largePlant.largePlantCode}
+    </update>
+
+    <update id="restartLargePlant">
+        update `large_plant` set `enable`=true ,`activity`=true
+        where `largePlantCode` = #{largePlant.largePlantCode}
+    </update>
+
+    <update id="updateLargePlant">
+        update `large_plant` set
+        <if test="largePlant.plantTypeCode != null">
+            `plantTypeCode`=#{largePlant.plantTypeCode},
+        </if>
+        <if test="largePlant.plantTypeName != null">
+            `plantTypeName`=#{largePlant.plantTypeName},
+        </if>
+        <if test="largePlant.largePlantName != null">
+            `largePlantName`=#{largePlant.largePlantName},
+        </if>
+        <if test="largePlant.plantPrice != null">
+            `plantPrice`=#{largePlant.plantPrice},
+        </if>
+        <if test="largePlant.plantFunction != null">
+            `plantFunction`=#{largePlant.plantFunction},
+        </if>
+        <if test="largePlant.growingEnvironment != null">
+            `growingEnvironment`=#{largePlant.growingEnvironment},
+        </if>
+        <if test="largePlant.conservationMethod != null">
+            `conservationMethod`=#{largePlant.conservationMethod},
+        </if>
+        <if test="largePlant.enable != null">
+            `enable`=#{largePlant.enable},
+        </if>
+        <if test="largePlant.activity != null">
+            `activity`=#{largePlant.activity},
+        </if>
+        <if test="largePlant.createrCode != null">
+            `createrCode`=#{largePlant.createrCode},
+        </if>
+        where `largePlantCode` = #{largePlant.largePlantCode}
+    </update>
+
+    <select id="selLargePlantList" resultType="com.zhangtao.plant_conservation.pojo.LargePlant">
+        select * from `large_plant` where 1=1
+    </select>
+
+    <select id="selLargePlantByCodeList" resultType="com.zhangtao.plant_conservation.pojo.LargePlant">
+        select * from `large_plant` where `largePlantCode` = #{largePlant.largePlantCode}
+        <if test="largePlant.enable != null">
+            and `enable`=#{largePlant.enable}
+        </if>
+    </select>
+</mapper>
